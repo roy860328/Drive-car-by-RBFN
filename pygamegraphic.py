@@ -9,7 +9,7 @@ centery = 300
 magnification = 2
 
 #Create pygameGUI and call environment
-def mainPygameGraphic():
+def mainPygame(RBFN):
     global centerx, centery, magnification
     carcenter, destination, edge = readFile("map/case01.txt")
 
@@ -17,7 +17,7 @@ def mainPygameGraphic():
     destination = simulated_environment.Destination(centerx + destination[0], centery - destination[1], (destination[2] - destination[0]), (destination[3] - destination[1]))
 
     edge = (1, -1)*edge*magnification + (centerx, centery)
-    car = simulated_environment.Car(centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
+    car = simulated_environment.Car(RBFN, centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
     edge = simulated_environment.Edge(edge)
 
     RED = (255, 0, 0)

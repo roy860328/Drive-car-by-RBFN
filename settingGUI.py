@@ -6,6 +6,7 @@ import matplotlib
 import numpy as np
 
 import pygamegraphic
+from RBFN import RBFN
 
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -34,7 +35,7 @@ class GUI():
         self.outputresultprint = tk.StringVar()
         outputresultLabel = tk.Label(self.interface, textvariable=self.outputresultprint)
         outputresultLabel.pack()
-        
+
         # 讓視窗實現
         self.interface.mainloop()
 
@@ -69,6 +70,12 @@ class GUI():
         self.hiddenLayerNeuralNumberInput = tk.Entry(self.interface)  # input Mutation Rate
         self.hiddenLayerNeuralNumberInput.insert(0, "10")
         self.hiddenLayerNeuralNumberInput.pack()
+        # Reproduce Way
+        reproduceWay = tk.Label(self.interface, text="Reproduce Way: Turntable or Competition")
+        reproduceWay.pack()
+        self.reproduceWayInput = tk.Entry(self.interface)  # input Mutation Rate
+        self.reproduceWayInput.insert(0, "Competition")
+        self.reproduceWayInput.pack()
 
     def createSelectionFile(self):
         ###################################map list#########################
@@ -117,8 +124,9 @@ class GUI():
         #get列表選取的txt檔案
         # selectionMap = self.mapListTxt.curselection()
         # selectionMap = self.mapListTxt.get(selectionMap)
-        selectionTrainData = self.mapListTxt.curselection()
-        selectionTrainData = self.mapListTxt.get(selectionTrainData)
+        selectionTrainData = self.trainDataListTxt.curselection()
+        selectionTrainData = self.trainDataListTxt.get(selectionTrainData)
+        selectionTrainData = os.path.dirname(__file__) + "/traindata/" + selectionTrainData
 
         #get Population Size, Mating Rate, Mutation Rate, Convergence, Hidden Layer Neural Number
         populationSize = float(self.populationSizeInput.get())
@@ -127,7 +135,9 @@ class GUI():
         convergenceCondition = int(self.convergenceInput.get())
         hiddenLayerNeuralNumber = int(self.hiddenLayerNeuralNumberInput.get())
 
+        self.RBFN = RBFN.RBFN(populationSize, matingRate, mutationRate, convergenceCondition, \
+                                hiddenLayerNeuralNumber, self.reproduceWayInput, selectionTrainData)
         # trainrate, testrate = Neural_Network().train(trainData, testData, ccondition, lrate)
         # print(trainrate)
         # plt.show()
-        pygamegraphic.mainPygameGraphic()
+        pygamegraphic.mainPygame(self.RBFN)

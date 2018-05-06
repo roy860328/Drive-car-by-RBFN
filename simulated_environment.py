@@ -9,7 +9,7 @@ import lineIntersectPoint
 import time
 #Car object with draw the car and obstacleDistance
 class Car(object):
-    def __init__(self, x, y, degree, magnification, edge):
+    def __init__(self, RBFN, x, y, degree, magnification, edge):
         self.x = x
         self.y = y
         #Coordinate angle
@@ -27,6 +27,8 @@ class Car(object):
 
         self.train4D = open("outputTrain4D.txt", 'w')
         self.train6D = open("outputTrain6D.txt", 'w')
+
+        self.RBFN = RBFN
 
     def draw(self, gameDisplay):
         self._carMove()
@@ -91,8 +93,8 @@ class Car(object):
             self.left = 0
 
         self.outputTxtFile()
-        #reset steeringWheel by fuzzy system
-        # steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
+        #set steeringWheel by RBFN
+        steeringWheel = self.RBFN.getSteeringWheel(self.straight, self.right, self.left)
         steeringWheel = 0
         self._setSteeringWheelAngle(steeringWheel)
 
