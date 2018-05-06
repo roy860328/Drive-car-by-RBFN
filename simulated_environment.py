@@ -25,8 +25,8 @@ class Car(object):
         self.right = 50 * magnification
         self.left = 50 * magnification
 
-        self.train4D = open("train4D.txt", 'w')
-        self.train6D = open("train6D.txt", 'w')
+        self.train4D = open("outputTrain4D.txt", 'w')
+        self.train6D = open("outputTrain6D.txt", 'w')
 
     def draw(self, gameDisplay):
         self._carMove()
