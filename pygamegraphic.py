@@ -1,7 +1,7 @@
 import pygame
 import os
 import numpy as np
-import simulatedenvironment
+import simulated_environment
 
 global centerx, centery, magnification
 centerx = 400
@@ -14,11 +14,11 @@ def mainPygameGraphic():
     carcenter, destination, edge = readFile("map/case01.txt")
 
     destination = destination*magnification
-    destination = simulatedenvironment.Destination(centerx + destination[0], centery - destination[1], (destination[2] - destination[0]), (destination[3] - destination[1]))
+    destination = simulated_environment.Destination(centerx + destination[0], centery - destination[1], (destination[2] - destination[0]), (destination[3] - destination[1]))
 
     edge = (1, -1)*edge*magnification + (centerx, centery)
-    car = simulatedenvironment.Car(centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
-    edge = simulatedenvironment.Edge(edge)
+    car = simulated_environment.Car(centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
+    edge = simulated_environment.Edge(edge)
 
     RED = (255, 0, 0)
     BLACK = (0, 0, 0)

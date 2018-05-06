@@ -20,27 +20,10 @@ class GUI():
         self.interface.title('self.interface')
         self.interface.geometry('500x600')
         # Add object
-        self.setLableEntry2Interface()
+        self.createLableEntry2Interface()
         # 列出txt檔案
-        self.listTxt = tk.Listbox(self.interface)
-        ##############os.path.dirname(sys.executable)當產出exe檔時才能正確找到txt檔案位置,但無法在.py檔中使用
-        ##############os.getcwd()只有在.py檔有用,因為exe檔的默認位置在"cd ~" 讀檔時會找不到檔案
-        print("sys.executable directory: ", os.path.dirname(sys.executable))
-        # dist = os.path.dirname(sys.executable).rsplit('/', 1)
-        # dist = dist[0] + "/Dataset/Hopfield_dataset"
-        dist = os.getcwd()
-        dist = dist + "/map"
-        print("\n\ndist: ", dist)
-        haveTxt = ''
-        for file in os.listdir(dist):
-            if file.endswith(".txt") or file.endswith(".TXT"):
-                haveTxt += str(file) + ','
-        haveTxt = haveTxt.split(",")
-        haveTxt = list(filter(None, haveTxt))
-        for txt in haveTxt:
-            self.listTxt.insert(0, txt)
-        # listTxt.bind('<<ListboxSelect>>', fileSelection)
-        self.listTxt.pack()
+        self.createSelectionFile()
+        
         # 訓練按鈕
         trainbtn = tk.Button(self.interface, text="train", command=self.clickTrainBtn)
         trainbtn.pack()
@@ -51,11 +34,11 @@ class GUI():
         self.outputresultprint = tk.StringVar()
         outputresultLabel = tk.Label(self.interface, textvariable=self.outputresultprint)
         outputresultLabel.pack()
-        #
+        
         # 讓視窗實現
         self.interface.mainloop()
 
-    def setLableEntry2Interface(self):
+    def createLableEntry2Interface(self):
         # population size
         populationSize = tk.Label(self.interface, text="Population Size")
         populationSize.pack()
@@ -87,10 +70,55 @@ class GUI():
         self.hiddenLayerNeuralNumberInput.insert(0, "10")
         self.hiddenLayerNeuralNumberInput.pack()
 
+    def createSelectionFile(self):
+        ###################################map list#########################
+        
+        self.mapListTxt = tk.Listbox(self.interface)
+        #os.path.dirname(sys.executable)當產出exe檔時才能正確找到txt檔案位置,但無法在.py檔中使用
+        #os.getcwd()只有在.py檔有用,因為exe檔的默認位置在"cd ~" 讀檔時會找不到檔案
+        # print("sys.executable directory: ", os.path.dirname(sys.executable))
+        # dist = os.path.dirname(sys.executable).rsplit('/', 1)
+        # dist = dist[0] + "/Dataset/Hopfield_dataset"
+        dist = os.getcwd()
+        dist = dist + "/map"
+        print("\n\ndist: ", dist)
+        haveTxt = ''
+        for file in os.listdir(dist):
+            if file.endswith(".txt") or file.endswith(".TXT"):
+                haveTxt += str(file) + ','
+        haveTxt = haveTxt.split(",")
+        haveTxt = list(filter(None, haveTxt))
+        for txt in haveTxt:
+            self.mapListTxt.insert(0, txt)
+        # self.mapListTxt.pack()
+        
+        ###################################Train data list#########################
+
+        self.trainDataListTxt = tk.Listbox(self.interface)
+        # os.path.dirname(sys.executable)當產出exe檔時才能正確找到txt檔案位置,但無法在.py檔中使用
+        # os.getcwd()只有在.py檔有用,因為exe檔的默認位置在"cd ~" 讀檔時會找不到檔案
+        # print("sys.executable directory: ", os.path.dirname(sys.executable))
+        # dist = os.path.dirname(sys.executable).rsplit('/', 1)
+        # dist = dist[0] + "/Dataset/Hopfield_dataset"
+        dist = os.getcwd()
+        dist = dist + "/traindata"
+        print("\n\ndist: ", dist)
+        haveTxt = ''
+        for file in os.listdir(dist):
+            if file.endswith(".txt") or file.endswith(".TXT"):
+                haveTxt += str(file) + ','
+        haveTxt = haveTxt.split(",")
+        haveTxt = list(filter(None, haveTxt))
+        for txt in haveTxt:
+            self.trainDataListTxt.insert(0, txt)
+        self.trainDataListTxt.pack()
+        
     def clickTrainBtn(self):
         #get列表選取的txt檔案
-        selectionfile = self.listTxt.curselection()
-        selectionfile = self.listTxt.get(selectionfile)
+        # selectionMap = self.mapListTxt.curselection()
+        # selectionMap = self.mapListTxt.get(selectionMap)
+        selectionTrainData = self.mapListTxt.curselection()
+        selectionTrainData = self.mapListTxt.get(selectionTrainData)
 
         #get Population Size, Mating Rate, Mutation Rate, Convergence, Hidden Layer Neural Number
         populationSize = float(self.populationSizeInput.get())
