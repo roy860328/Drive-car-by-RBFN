@@ -1,24 +1,24 @@
 import pygame
 import os
 import numpy as np
-import environment
+import simulatedenvironment
 
 global centerx, centery, magnification
 centerx = 400
 centery = 300
 magnification = 2
 
-#Create GUI and call environment
-def mainGraphic():
+#Create pygameGUI and call environment
+def mainPygameGraphic():
     global centerx, centery, magnification
     carcenter, destination, edge = readFile("map/case01.txt")
 
     destination = destination*magnification
-    destination = environment.Destination(centerx+destination[0], centery-destination[1], (destination[2]-destination[0]), (destination[3]-destination[1]))
+    destination = simulatedenvironment.Destination(centerx + destination[0], centery - destination[1], (destination[2] - destination[0]), (destination[3] - destination[1]))
 
     edge = (1, -1)*edge*magnification + (centerx, centery)
-    car = environment.Car(centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
-    edge = environment.Edge(edge)
+    car = simulatedenvironment.Car(centerx + carcenter[0], centery + carcenter[1], carcenter[2], magnification, edge)
+    edge = simulatedenvironment.Edge(edge)
 
     RED = (255, 0, 0)
     BLACK = (0, 0, 0)
@@ -45,6 +45,13 @@ def mainGraphic():
     pygame.quit()
     quit()
 
+def showWinGraphic(gameDisplay):
+    largeText = pygame.font.Font('freesansbold.ttf', 115)
+    textSurface = largeText.render("Win", True, (255, 0, 0))
+    textSurface.get_rect().center = ((centerx / 2), (centery / 2))
+    gameDisplay.blit(textSurface, textSurface.get_rect())
+    pygame.display.update()
+
 #Read wall boundary
 def readFile(file):
     try:
@@ -70,12 +77,3 @@ def readFile(file):
            np.array(destination, dtype=int), \
            np.array(edge, dtype=int)
 
-def showWinGraphic(gameDisplay):
-    largeText = pygame.font.Font('freesansbold.ttf', 115)
-    textSurface = largeText.render("Win", True, (255, 0, 0))
-    textSurface.get_rect().center = ((centerx / 2), (centery / 2))
-    gameDisplay.blit(textSurface, textSurface.get_rect())
-    pygame.display.update()
-
-
-mainGraphic()
