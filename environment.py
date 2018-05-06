@@ -4,7 +4,7 @@
 import pygame
 import math
 import numpy
-import fuzzy_system
+# import fuzzy_system
 import lineIntersectPoint
 import time
 #Car object with draw the car and obstacleDistance
@@ -92,7 +92,8 @@ class Car(object):
 
         self.outputTxtFile()
         #reset steeringWheel by fuzzy system
-        steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
+        # steeringWheel = fuzzy_system.fuzzy_System_Return_Angle(self.straight, self.right, self.left)
+        steeringWheel = 0
         self._setSteeringWheelAngle(steeringWheel)
 
         time.sleep(0.01)

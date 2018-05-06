@@ -11,7 +11,7 @@ magnification = 2
 #Create GUI and call environment
 def mainGraphic():
     global centerx, centery, magnification
-    carcenter, destination, edge = readFile("case01.txt")
+    carcenter, destination, edge = readFile("map/case01.txt")
 
     destination = destination*magnification
     destination = environment.Destination(centerx+destination[0], centery-destination[1], (destination[2]-destination[0]), (destination[3]-destination[1]))
