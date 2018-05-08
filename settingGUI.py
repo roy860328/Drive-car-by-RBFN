@@ -76,6 +76,9 @@ class GUI():
         self.reproduceWayInput = tk.Entry(self.interface)  # input Mutation Rate
         self.reproduceWayInput.insert(0, "Competition")
         self.reproduceWayInput.pack()
+        #map
+        map = tk.Label(self.interface, text="Map")
+        map.pack()
 
     def createSelectionFile(self):
         ###################################map list#########################
@@ -136,7 +139,7 @@ class GUI():
         hiddenLayerNeuralNumber = int(self.hiddenLayerNeuralNumberInput.get())
 
         self.RBFN = RBFN.RBFN(populationSize, matingRate, mutationRate, convergenceCondition, \
-                                hiddenLayerNeuralNumber, self.reproduceWayInput, selectionTrainData)
+                                hiddenLayerNeuralNumber, self.reproduceWayInput.get(), selectionTrainData)
         # trainrate, testrate = Neural_Network().train(trainData, testData, ccondition, lrate)
         # print(trainrate)
         # plt.show()
