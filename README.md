@@ -13,11 +13,11 @@ python3 main.py
 
 2.Chose a map
 
-![alt text](https://raw.githubusercontent.com/roy860328/RBFN-Genetic_algorithm/master/image/image1.png)
-
 3.Click "train" button
 
-![alt text](https://raw.githubusercontent.com/roy860328/RBFN-Genetic_algorithm/master/image/image2.png)
+![alt text](https://raw.githubusercontent.com/roy860328/RBFN-Genetic_algorithm/master/image/image1.png)
+
+![alt text](https://raw.githubusercontent.com/roy860328/RBFN-Genetic_algorithm/master/image/image3.png)
 
 
 # Library Requirement
