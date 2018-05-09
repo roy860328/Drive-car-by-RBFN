@@ -43,7 +43,6 @@ def mainPygame(RBFN):
 
         clock.tick(30)
     pygame.quit()
-    quit()
 
 def showWinGraphic(gameDisplay):
     largeText = pygame.font.Font('freesansbold.ttf', 115)

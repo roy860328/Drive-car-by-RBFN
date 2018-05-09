@@ -94,8 +94,7 @@ class Car(object):
 
         self.outputTxtFile()
         #set steeringWheel by RBFN
-        steeringWheel = self.RBFN.getSteeringWheel(self.straight, self.right, self.left)
-        steeringWheel = 0
+        steeringWheel = self.RBFN.get_steeringWheel(self.straight, self.right, self.left)
         self._setSteeringWheelAngle(steeringWheel)
 
         time.sleep(0.01)

@@ -25,12 +25,11 @@ class Genetic_Algorithm(object):
                 sum += gene_pool[i] * self._gaussian_basis_function(trainData[:,:3], gene_pool[self.hiddenLayerNeuralNumber + i*3 : self.hiddenLayerNeuralNumber + i*3 + 3], \
                                                      gene_pool[self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + i: self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + i + 1])
         fitness = (trainData[:,3]-sum)**2
-        fitnesssum = np.sum(fitness, axis = 0)
-
+        fitnesssum = np.sum(fitness, axis = 0)/2
         return fitnesssum
     #trainData=[none, 3], m=[1, 3], sigma[1, 3]
     def _gaussian_basis_function(self, trainData, m, sigma):
-        phi = np.exp(-(trainData - m)**2/(2*sigma))
+        phi = np.exp(-(trainData - m)**2/(2*(sigma)**2))
         phi = np.sum(phi, axis=1)
         return phi
     #
@@ -42,23 +41,41 @@ class Genetic_Algorithm(object):
         if self.reproduceWay == "Competition":
             self.gene_pool = self.gene_pool[self.gene_pool[:,-1].argsort()]
             if self.gene_pool.shape[0]%2 == 0:
-                self.gene_pool[int(self.gene_pool.shape[0]/2) :, :] = self.gene_pool[0: int(self.gene_pool.shape[0]/2), :]
+                self.gene_pool[int(self.gene_pool.shape[0] / 2):, :] = self.gene_pool[
+                                                                       0: int(self.gene_pool.shape[0] / 2), :]
             else:
                 self.gene_pool[int(self.gene_pool.shape[0] / 2):, :] = self.gene_pool[
-                                                                       0: int(self.gene_pool.shape[0] / 2)+1, :]
+                                                                       0: int(self.gene_pool.shape[0] / 2) + 1, :]
         elif self.reproduceWay == "Turntable":
-            probability = self.gene_pool[:,-1]
-            probability = probability / np.sum(probability)
+            self.gene_pool = self.gene_pool[self.gene_pool[:, -1].argsort()]
+            probability = np.array(self.gene_pool[:,-1])
+            probability = np.max(probability)-probability
+            probability = (probability / np.sum(probability))
+            print(np.max(probability))
             select_list = np.random.choice(self.populationSize, self.populationSize, p=probability)
+            # print(select_list)
+            select_list = np.sort(select_list)
             self.gene_pool = self.gene_pool[select_list]
-            pass
-        pass
+            self.gene_pool = self.gene_pool[self.gene_pool[:, -1].argsort()]
+
     #
     def mate(self):
-        pass
+        radom_index = np.random.choice(self.populationSize, self.populationSize, replace=False)
+        self.gene_pool = self.gene_pool[radom_index]
+        for i in range(len(self.gene_pool)-1):
+            if np.random.rand(1)[0] < self.matingRate:
+                temp = np.array(self.gene_pool[i])
+                self.gene_pool[i] = self.gene_pool[i] + 0.1*(temp - self.gene_pool[i+1])
+                self.gene_pool[i+1] = self.gene_pool[i+1] - 0.1*(temp - self.gene_pool[i+1])
     #
     def mutate(self):
-        pass
+        for i in range(len(self.gene_pool) - 1):
+            if np.random.rand(1)[0] < self.mutationRate:
+                self.gene_pool[i] = self.gene_pool[i] + 0.3 * (np.random.uniform(-1.0, 1.0, size=(self.Dim+1,)))
     #
-    def get_optimization_para(self):
-        return 0
+    def get_optimization_para(self, data_len, i):
+        min_index = np.argmin(self.gene_pool[:,-1])
+        error_rate = self.gene_pool[min_index,-1]/data_len
+        print("error rate: ", error_rate, "iterate time: ", i)
+        best_gene = self.gene_pool[min_index]
+        return best_gene
