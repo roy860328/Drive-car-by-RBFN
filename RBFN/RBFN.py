@@ -14,6 +14,7 @@ class RBFN(object):
     def get_steeringWheel(self, straight, right, left):
         value = np.array([straight/2, right/2, left/2])
         value = (value - 40) / 40
+        print(straight, right, left, value)
         sum = 0
         try:
             for i in range(self.hiddenLayerNeuralNumber+1):
@@ -21,7 +22,7 @@ class RBFN(object):
                     sum += self.weight[0]
                 else:
                     phi = np.exp(\
-                        -(value - self.weight[self.hiddenLayerNeuralNumber + i*3 : self.hiddenLayerNeuralNumber + i*3 + 3]) ** 2 / (2 * (self.weight[self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + i: self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + i + 1])**2) )
+                        -(value - self.weight[1 + self.hiddenLayerNeuralNumber + (i-1)*3 : 1 + self.hiddenLayerNeuralNumber + (i-1)*3 + 3]) ** 2 / (2 * (self.weight[1 + self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + (i-1): 1 + self.hiddenLayerNeuralNumber + self.hiddenLayerNeuralNumber*3 + (i-1) + 1])**2) )
                     phi = np.sum(phi, axis=0)
                     sum += self.weight[i] * phi
             if math.isnan(sum):
@@ -29,7 +30,7 @@ class RBFN(object):
         except Exception as e:
             print(e)
             quit()
-        sum = sum*40   #unnormalize
+        sum = sum*80   #unnormalize
         print(sum)
         return sum
     #start to train RBFN by genetic_algorithm

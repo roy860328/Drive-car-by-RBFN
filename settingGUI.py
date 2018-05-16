@@ -44,7 +44,7 @@ class GUI():
         populationSize = tk.Label(self.interface, text="Population Size")
         populationSize.pack()
         self.populationSizeInput = tk.Entry(self.interface)  # input Population Size
-        self.populationSizeInput.insert(0, "50")
+        self.populationSizeInput.insert(0, "2000")
         self.populationSizeInput.pack()
         # Mating Rate
         matingRate = tk.Label(self.interface, text="Mating Rate")
@@ -56,25 +56,25 @@ class GUI():
         mutationRate = tk.Label(self.interface, text="Mutation Rate")
         mutationRate.pack()
         self.mutationRateInput = tk.Entry(self.interface)  # input Mutation Rate
-        self.mutationRateInput.insert(0, "0.05")
+        self.mutationRateInput.insert(0, "0.005")
         self.mutationRateInput.pack()
         # 收斂字幕
         convergence = tk.Label(self.interface, text="Convergence (train times)")
         convergence.pack()
         self.convergenceInput = tk.Entry(self.interface)  # input Convergence
-        self.convergenceInput.insert(0, "500")
+        self.convergenceInput.insert(0, "100")
         self.convergenceInput.pack()
         # Hidden Layer Neural Number
         hiddenLayerNeuralNumber = tk.Label(self.interface, text="Hidden Layer Neural Number")
         hiddenLayerNeuralNumber.pack()
         self.hiddenLayerNeuralNumberInput = tk.Entry(self.interface)  # input Mutation Rate
-        self.hiddenLayerNeuralNumberInput.insert(0, "5")
+        self.hiddenLayerNeuralNumberInput.insert(0, "2")
         self.hiddenLayerNeuralNumberInput.pack()
         # Reproduce Way
         reproduceWay = tk.Label(self.interface, text="Reproduce Way: Turntable or Competition")
         reproduceWay.pack()
         self.reproduceWayInput = tk.Entry(self.interface)  # input Mutation Rate
-        self.reproduceWayInput.insert(0, "Competition")
+        self.reproduceWayInput.insert(0, "Turntable")
         self.reproduceWayInput.pack()
         #map
         map = tk.Label(self.interface, text="Map")
