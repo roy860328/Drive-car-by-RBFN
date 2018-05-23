@@ -49,14 +49,16 @@ class Genetic_Algorithm(object):
         elif self.reproduceWay == "Turntable":
             self.gene_pool = self.gene_pool[self.gene_pool[:, -1].argsort()]
             probability = np.array(self.gene_pool[:,-1])
+            print(np.max(probability), np.min(probability))
             probability = np.max(probability)-probability
             probability = (probability / np.sum(probability))
-            print(np.max(probability))
             select_list = np.random.choice(self.populationSize, self.populationSize, p=probability)
             # print(select_list)
             select_list = np.sort(select_list)
             self.gene_pool = self.gene_pool[select_list]
             self.gene_pool = self.gene_pool[self.gene_pool[:, -1].argsort()]
+            # probability = np.array(self.gene_pool[:, -1])
+            # print(np.max(probability), np.min(probability))
 
     #
     def mate(self):
@@ -64,6 +66,7 @@ class Genetic_Algorithm(object):
         self.gene_pool = self.gene_pool[radom_index]
         for i in range(len(self.gene_pool)-1):
             if np.random.rand(1)[0] < self.matingRate and i%2 == 0:
+                # print(i)
                 temp = np.array(self.gene_pool[i])
                 self.gene_pool[i] = self.gene_pool[i] + np.random.rand(1)[0]*(temp - self.gene_pool[i+1])
                 self.gene_pool[i+1] = self.gene_pool[i+1] - np.random.rand(1)[0]*(temp - self.gene_pool[i+1])
