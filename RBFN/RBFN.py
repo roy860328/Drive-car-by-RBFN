@@ -1,11 +1,11 @@
 import os
 import numpy as np
 import math
-from RBFN import genetic_algorithm
+from RBFN import pos
 
 class RBFN(object):
-    def __init__(self, populationSize, matingRate, mutationRate, convergenceCondition, hiddenLayerNeuralNumber, reproduceWay, trainData):
-        self.genetic_Algorithm = genetic_algorithm.Genetic_Algorithm(populationSize, matingRate, mutationRate, hiddenLayerNeuralNumber, reproduceWay)
+    def __init__(self, populationSize, c1, c2, convergenceCondition, hiddenLayerNeuralNumber, trainData):
+        self.particleswarmoptimization = pos.ParticleSwarmOptimization(populationSize, c1, c2, hiddenLayerNeuralNumber)
         self.hiddenLayerNeuralNumber = hiddenLayerNeuralNumber
         self.trainData = self._read_File(trainData)
         self.save_weight = open("weight.txt", 'w')
@@ -36,14 +36,15 @@ class RBFN(object):
     #start to train RBFN by genetic_algorithm
     def _train(self, convergenceCondition):
         self.trainData = self._normalize_Train_Data(self.trainData)
+        self.particleswarmoptimization.create_particle_x_p_v(self.trainData)
         for i in range(convergenceCondition):
-            self.genetic_Algorithm.calculate_Fitness_Function(self.trainData)
-            self.weight = self.genetic_Algorithm.get_optimization_para(self.trainData.shape[0], i)
-            self.genetic_Algorithm.reproduce()
-            self.genetic_Algorithm.mate()
-            self.genetic_Algorithm.mutate()
-        self.genetic_Algorithm.calculate_Fitness_Function(self.trainData)
-        self.weight = self.genetic_Algorithm.get_optimization_para(self.trainData.shape[0], 0)
+            self.particleswarmoptimization.particle_swarm_optimization()
+            self.particleswarmoptimization.calculate_Fitness_Function(self.trainData)
+            self.particleswarmoptimization.chose_best_fitness_particle()
+
+            self.weight = self.particleswarmoptimization.get_optimization_para(self.trainData.shape[0], i)
+        # self.genetic_Algorithm.calculate_Fitness_Function(self.trainData)
+        # self.weight = self.genetic_Algorithm.get_optimization_para(self.trainData.shape[0], 0)
         self.save_weight.write(np.array2string(self.weight))
         print("Weight: ", self.weight)
     #Normalize train data

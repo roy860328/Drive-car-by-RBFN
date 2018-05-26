@@ -1,15 +1,12 @@
 import os
 import sys
 import tkinter as tk
-import matplotlib
 #
 import numpy as np
 
 import pygamegraphic
 from RBFN import RBFN
 
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
 
 class GUI():
     def __init__(self):
@@ -41,23 +38,23 @@ class GUI():
 
     def createLableEntry2Interface(self):
         # population size
-        populationSize = tk.Label(self.interface, text="Population Size")
+        populationSize = tk.Label(self.interface, text="Population Size (particle)")
         populationSize.pack()
         self.populationSizeInput = tk.Entry(self.interface)  # input Population Size
-        self.populationSizeInput.insert(0, "2000")
+        self.populationSizeInput.insert(0, "400")
         self.populationSizeInput.pack()
-        # Mating Rate
-        matingRate = tk.Label(self.interface, text="Mating Rate")
-        matingRate.pack()
-        self.matingRateInput = tk.Entry(self.interface)  # input Mating Rate
-        self.matingRateInput.insert(0, "0.5")
-        self.matingRateInput.pack()
-        # Mutation Rate
-        mutationRate = tk.Label(self.interface, text="Mutation Rate")
-        mutationRate.pack()
-        self.mutationRateInput = tk.Entry(self.interface)  # input Mutation Rate
-        self.mutationRateInput.insert(0, "0.005")
-        self.mutationRateInput.pack()
+        # acceleration constants c1
+        c1Label = tk.Label(self.interface, text="Acceleration constants: c1")
+        c1Label.pack()
+        self.c1LabelInput = tk.Entry(self.interface)  # input Mating Rate
+        self.c1LabelInput.insert(0, "0.6")
+        self.c1LabelInput.pack()
+        # acceleration constants c2
+        c2Label = tk.Label(self.interface, text="Acceleration constants: c2")
+        c2Label.pack()
+        self.c2LabelInput = tk.Entry(self.interface)  # input Mutation Rate
+        self.c2LabelInput.insert(0, "0.4")
+        self.c2LabelInput.pack()
         # 收斂字幕
         convergence = tk.Label(self.interface, text="Convergence (train times)")
         convergence.pack()
@@ -70,38 +67,11 @@ class GUI():
         self.hiddenLayerNeuralNumberInput = tk.Entry(self.interface)  # input Mutation Rate
         self.hiddenLayerNeuralNumberInput.insert(0, "2")
         self.hiddenLayerNeuralNumberInput.pack()
-        # Reproduce Way
-        reproduceWay = tk.Label(self.interface, text="Reproduce Way: Turntable or Competition")
-        reproduceWay.pack()
-        self.reproduceWayInput = tk.Entry(self.interface)  # input Mutation Rate
-        self.reproduceWayInput.insert(0, "Turntable")
-        self.reproduceWayInput.pack()
-        #map
-        map = tk.Label(self.interface, text="Map")
-        map.pack()
+        #TrainLabel
+        TrainLabel = tk.Label(self.interface, text="Train data")
+        TrainLabel.pack()
 
     def createSelectionFile(self):
-        ###################################map list#########################
-        
-        self.mapListTxt = tk.Listbox(self.interface)
-        #os.path.dirname(sys.executable)當產出exe檔時才能正確找到txt檔案位置,但無法在.py檔中使用
-        #os.getcwd()只有在.py檔有用,因為exe檔的默認位置在"cd ~" 讀檔時會找不到檔案
-        # print("sys.executable directory: ", os.path.dirname(sys.executable))
-        # dist = os.path.dirname(sys.executable).rsplit('/', 1)
-        # dist = dist[0] + "/Dataset/Hopfield_dataset"
-        dist = os.getcwd()
-        dist = dist + "/map"
-        print("\n\ndist: ", dist)
-        haveTxt = ''
-        for file in os.listdir(dist):
-            if file.endswith(".txt") or file.endswith(".TXT"):
-                haveTxt += str(file) + ','
-        haveTxt = haveTxt.split(",")
-        haveTxt = list(filter(None, haveTxt))
-        for txt in haveTxt:
-            self.mapListTxt.insert(0, txt)
-        # self.mapListTxt.pack()
-        
         ###################################Train data list#########################
 
         self.trainDataListTxt = tk.Listbox(self.interface)
@@ -125,22 +95,18 @@ class GUI():
         
     def clickTrainBtn(self):
         #get列表選取的txt檔案
-        # selectionMap = self.mapListTxt.curselection()
-        # selectionMap = self.mapListTxt.get(selectionMap)
         selectionTrainData = self.trainDataListTxt.curselection()
         selectionTrainData = self.trainDataListTxt.get(selectionTrainData)
         selectionTrainData = os.path.dirname(__file__) + "/traindata/" + selectionTrainData
 
         #get Population Size, Mating Rate, Mutation Rate, Convergence, Hidden Layer Neural Number
         populationSize = float(self.populationSizeInput.get())
-        matingRate = float(self.matingRateInput.get())
-        mutationRate = float(self.mutationRateInput.get())
+        c1Label = float(self.c1LabelInput.get())
+        c2Label = float(self.c2LabelInput.get())
         convergenceCondition = int(self.convergenceInput.get())
         hiddenLayerNeuralNumber = int(self.hiddenLayerNeuralNumberInput.get())
 
-        self.RBFN = RBFN.RBFN(populationSize, matingRate, mutationRate, convergenceCondition, \
-                                hiddenLayerNeuralNumber, self.reproduceWayInput.get(), selectionTrainData)
-        # trainrate, testrate = Neural_Network().train(trainData, testData, ccondition, lrate)
-        # print(trainrate)
-        # plt.show()
+        self.RBFN = RBFN.RBFN(populationSize, c1Label, c2Label, convergenceCondition, \
+                                hiddenLayerNeuralNumber, selectionTrainData)
+
         pygamegraphic.mainPygame(self.RBFN)

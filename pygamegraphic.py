@@ -36,6 +36,8 @@ def mainPygame(RBFN):
 
         if destination.detectCarCollision(car.getCar_X_Y()[0], car.getCar_X_Y()[1]):
             showWinGraphic(gameDisplay)
+        elif car.straight < 1 or car.left < 1 or car.right < 1:
+            pygame.quit()
         else:
             destination.draw(gameDisplay)
             car.draw(gameDisplay)
